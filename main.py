@@ -70,3 +70,11 @@ lg.info('Finished calculating hashes and sizes of files')
 with open(config['Files']['LauncherConfig'], "w") as f:
     json.dump(launcherconfig, f, indent=4)
 lg.info('Finished writing the launcher config file')
+
+lg.info('Deleting temp files')
+for modfile in os.listdir(main_file_path + "/temp/mods"):
+    os.remove(main_file_path + "/temp/mods/" + modfile)
+for rpfile in os.listdir(main_file_path + "/temp/rps"):
+    os.remove(main_file_path + "/temp/rps/" + rpfile)
+
+lg.info('Finished deleting temp files')
