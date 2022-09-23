@@ -46,7 +46,11 @@ ftp.cwd(config['FTP']['RPFileDir'])
 for rpfile in ftp.nlst():
     lg.debug("Downloading file: " + rpfile)
     with open(main_file_path + "/temp/rps/" + rpfile, 'wb') as f:
-        ftp.retrbinary('RETR ' + rpfile, f.write)
+        try:
+            ftp.retrbinary('RETR ' + rpfile, f.write)
+        except ftplib.error_perm:
+            lg.warning("File not found on FTP server: " + rpfile)
+            pass
 ftp.quit()
 lg.info('Finished downloading files')
 
