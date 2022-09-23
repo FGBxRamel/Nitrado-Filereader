@@ -44,11 +44,13 @@ if not os.path.exists(main_file_path + "/temp/mods"):
     os.makedirs(main_file_path + "/temp/mods")
 if not os.path.exists(main_file_path + "/temp/rps"):
     os.makedirs(main_file_path + "/temp/rps")
+print("Downloading files...")
 for modfile in ftp.nlst():
     lg.debug("Downloading file: " + modfile)
     with open(main_file_path + "/temp/mods/" + modfile, "wb") as f:
         try:
             ftp.retrbinary("RETR " + modfile, f.write)
+            print("Downloaded " + modfile)
         except ftplib.error_perm:
             lg.warning("File not found: " + modfile)
             continue
@@ -58,14 +60,17 @@ for rpfile in ftp.nlst():
     with open(main_file_path + "/temp/rps/" + rpfile, "wb") as f:
         try:
             ftp.retrbinary("RETR " + rpfile, f.write)
+            print("Downloaded " + rpfile)
         except ftplib.error_perm:
             lg.warning("File not found on FTP server: " + rpfile)
             continue
 ftp.quit()
+print("Download complete")
 lg.info("Finished downloading files")
 
 # Go trough the files and put their name, hashes and size in a dict and put the dicts in a list
 lg.info("Calculating hashes and sizes of files")
+print("Calculating hashes and sizes of files...")
 modfiles = []
 for modfile in os.listdir(main_file_path + "/temp/mods"):
     modfiles.append(
@@ -90,10 +95,12 @@ for rpfile in os.listdir(main_file_path + "/temp/rps"):
         }
     )
 launcherconfig["additional"]["config/immersiverailroading"] = rpfiles
+print("Finished calculating hashes and sizes of files")
 lg.info("Finished calculating hashes and sizes of files")
 with open(config["Files"]["LauncherConfig"], "w") as f:
     json.dump(launcherconfig, f, indent=4)
 lg.info("Finished writing the launcher config file")
+print("Finished writing the launcher config file")
 
 lg.info("Deleting temp files")
 for modfile in os.listdir(main_file_path + "/temp/mods"):
@@ -102,3 +109,5 @@ for rpfile in os.listdir(main_file_path + "/temp/rps"):
     os.remove(main_file_path + "/temp/rps/" + rpfile)
 
 lg.info("Finished deleting temp files")
+print("Finished deleting temp files")
+print("Finished updating the launcher config file")
