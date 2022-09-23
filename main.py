@@ -13,7 +13,7 @@ def hash256(hfile):
 
 config = cfg.ConfigParser()
 config.read('config.ini')
-lg.debug(config.sections())
+print(config.sections())
 
 # Open the Launcher Config File (specified in config.ini) and parse it with json
 with open(config['Files']['LauncherConfig'], "r") as f:
