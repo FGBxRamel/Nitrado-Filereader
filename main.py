@@ -13,7 +13,7 @@ def hash256(hfile):
 
 config = cfg.ConfigParser()
 config.read('config.ini')
-print(config.sections())
+
 
 # Open the Launcher Config File (specified in config.ini) and parse it with json
 with open(config['Files']['LauncherConfig'], "r") as f:
@@ -26,7 +26,7 @@ lg.basicConfig(filename=config['Files']['Log'], level=log_level,
 
 lg.info('Connecting to FTP server and downloading files') 
 ftp = ftplib.FTP()
-ftp.connect(config['FTP']['Host'], config['FTP']['Port'])
+ftp.connect(config['FTP']['Host'], int(config['FTP']['Port']))
 ftp.login(config['FTP']['User'], config['FTP']['Password'])
 # Go to the directory where the files are (specified in config.ini) and download them
 ftp.cwd(config['FTP']['ModFileDir'])
