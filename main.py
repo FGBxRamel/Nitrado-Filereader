@@ -41,7 +41,11 @@ if not os.path.exists(main_file_path + "/temp/rps"):
 for modfile in ftp.nlst():
     lg.debug("Downloading file: " + modfile)
     with open(main_file_path + "/temp/mods/" + modfile, 'wb') as f:
-        ftp.retrbinary('RETR ' + modfile, f.write)
+        try:
+            ftp.retrbinary('RETR ' + modfile, f.write)
+        except ftplib.error_perm:
+            lg.warning("File not found: " + modfile)
+            continue
 ftp.cwd(config['FTP']['RPFileDir'])
 for rpfile in ftp.nlst():
     lg.debug("Downloading file: " + rpfile)
@@ -50,7 +54,7 @@ for rpfile in ftp.nlst():
             ftp.retrbinary('RETR ' + rpfile, f.write)
         except ftplib.error_perm:
             lg.warning("File not found on FTP server: " + rpfile)
-            pass
+            continue
 ftp.quit()
 lg.info('Finished downloading files')
 
